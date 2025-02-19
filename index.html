@@ -7,7 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     body {
-      background: url('https://drive.google.com/uc?export=download&id=190g7uv_uy8atFYG3k6FCIjQzrTyDcgCF') no-repeat center center fixed;
+      background: url('https://bestetasci.github.io/wedding-invitation/Beste_Tasci.png') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Arial', sans-serif;
       margin: 0;
@@ -73,7 +73,7 @@
 <body>
   <div class="hero">
     <div class="svg-wrapper">
-      <img src="https://drive.google.com/uc?export=download&id=12DZIUCg5e9dg_CS046gnZgGabg-qDe54" alt="Düğün Davetiyesi" loading="lazy">
+      <img src="https://bestetasci.github.io/wedding-invitation/davetiye.png" alt="Düğün Davetiyesi" loading="lazy">
     </div>
     <div class="scroll-down" onclick="scrollToSection()">Aşağı kaydır ⬇️</div>
   </div>
@@ -90,9 +90,9 @@
 
     <h3 class="mt-8 text-xl font-medium">Katılım Durumu</h3>
     <form id="rsvp-form" class="mt-4 rsvp-form"
-          method="POST"
-          action="https://script.google.com/macros/s/AKfycbyVG6uCZQNuPiK6ndgB5foRcYdVmMTIpWFShPQ4jYRJZAcgCdUbJU9m-7SfFRzVY5II/exec"
-          onsubmit="event.preventDefault(); submitResponse();">
+      method="POST"
+      action="https://script.google.com/macros/s/AKfycbwAyuxOrA7UrBymacspf72d1xL7GetdBpDwNHqwhRoAXHYrikeuRAmheL5PP8WhIxk1/exec"
+      onsubmit="event.preventDefault(); submitResponse();">
       <label for="name" class="block text-gray-700">Adınız:</label>
       <input type="text" id="name" name="name" class="w-full p-2 border border-gray-300 rounded-lg mt-2" required>
 
@@ -107,6 +107,7 @@
 
       <button type="submit">Gönder</button>
     </form>
+
     <p id="response-msg" class="mt-4 text-lg text-green-600"></p>
   </div>
 
@@ -120,7 +121,7 @@
       const attendance = document.getElementById('attendance').value;
       const plusOne = document.getElementById('plus-one').checked ? 'Evet' : 'Hayır';
 
-      // URLSearchParams ile form verilerini oluşturuyoruz.
+      // Form verilerini URLSearchParams ile oluşturuyoruz.
       const formData = new URLSearchParams();
       formData.append('name', name);
       formData.append('attendance', attendance);
@@ -147,6 +148,20 @@
         document.getElementById('response-msg').textContent = 'Bir hata oluştu: ' + error.message;
       }
     }
-  </script>
+
+    // URL'den "name" parametresini okuyup, formdaki "Adınız" alanını dolduruyoruz.
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const name = params.get('name');
+      if (name) {
+        const nameInput = document.getElementById('name');
+        if (nameInput) {
+          nameInput.value = name;
+          nameInput.readOnly = true;  // Kullanıcının ismi değiştirmemesi için
+        }
+      }
+  });
+</script>
+
 </body>
 </html>
