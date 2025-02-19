@@ -152,13 +152,10 @@
     // URL'den "name" parametresini okuyup, formdaki "Adınız" alanını dolduruyoruz.
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
-      const name = params.get('name');
-      if (name) {
+      const nameParam = params.get('name');
+      if (nameParam) {
         const nameInput = document.getElementById('name');
-        if (nameInput) {
-          nameInput.value = name;
-          nameInput.readOnly = true;  // Kullanıcının ismi değiştirmemesi için
-        }
+        nameInput.value = nameParam;
       }
   });
 </script>
