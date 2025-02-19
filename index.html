@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Düğün Davetiyesi</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: url('https://drive.google.com/uc?export=download&id=190g7uv_uy8atFYG3k6FCIjQzrTyDcgCF') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      text-align: center;
+      padding-top: 20px;
+      box-sizing: border-box;
+      color: #333;
+      overflow: hidden;
+    }
+    .scroll-section {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 50px;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
+      margin-top: -10px;
+      z-index: 2;
+    }
+    .rsvp-form button {
+      margin-top: 20px;
+      width: 100%;
+      background-color: #4caf50;
+      color: white;
+      font-size: 1rem;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .rsvp-form button:hover {
+      background-color: #45a049;
+    }
+    .svg-wrapper {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    /* Hem <object> hem de <img> için ortak stil */
+    object, img {
+      width: 100%;
+      max-height: 100%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    /* Scroll-down butonu için stil */
+    .scroll-down {
+      cursor: pointer;
+      color: #2563eb;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="svg-wrapper">
+      <img src="https://drive.google.com/uc?export=download&id=12DZIUCg5e9dg_CS046gnZgGabg-qDe54" alt="Düğün Davetiyesi" loading="lazy">
+    </div>
+    <div class="scroll-down" onclick="scrollToSection()">Aşağı kaydır ⬇️</div>
+  </div>
+
+  <div class="scroll-section">
+    <h2 class="text-2xl font-semibold text-gray-800">Detaylı Akış Bilgisi</h2>
+    <ul class="mt-4 text-gray-600">
+      <li><strong>18:30:</strong> Vapur Bostancı İskelesi'nden kalkış</li>
+      <li><strong>19:00:</strong> Kokteyl</li>
+      <li><strong>19:30:</strong> Nikah</li>
+      <li><strong>20:00:</strong> Yemek</li>
+      <li><strong>00:30:</strong> Dönüş vapuru</li>
+    </ul>
+
+    <h3 class="mt-8 text-xl font-medium">Katılım Durumu</h3>
+    <form id="rsvp-form" class="mt-4 rsvp-form"
+          method="POST"
+          action="https://script.google.com/macros/s/AKfycbyVG6uCZQNuPiK6ndgB5foRcYdVmMTIpWFShPQ4jYRJZAcgCdUbJU9m-7SfFRzVY5II/exec"
+          onsubmit="event.preventDefault(); submitResponse();">
+      <label for="name" class="block text-gray-700">Adınız:</label>
+      <input type="text" id="name" name="name" class="w-full p-2 border border-gray-300 rounded-lg mt-2" required>
+
+      <label for="attendance" class="block text-gray-700 mt-4">Katılım Durumu:</label>
+      <select id="attendance" name="attendance" class="w-full p-2 border border-gray-300 rounded-lg mt-2">
+        <option value="Geleceğim">Geleceğim</option>
+        <option value="Gelemeyeceğim">Gelemeyeceğim</option>
+      </select>
+
+      <label for="plus-one" class="block text-gray-700 mt-4">+1 ile Katılacak mısınız?</label>
+      <input type="checkbox" id="plus-one" name="plusOne" class="mt-2">
+
+      <button type="submit">Gönder</button>
+    </form>
+    <p id="response-msg" class="mt-4 text-lg text-green-600"></p>
+  </div>
+
+  <script>
+    function scrollToSection() {
+      document.querySelector('.scroll-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function submitResponse() {
+      const name = document.getElementById('name').value;
+      const attendance = document.getElementById('attendance').value;
+      const plusOne = document.getElementById('plus-one').checked ? 'Evet' : 'Hayır';
+
+      // URLSearchParams ile form verilerini oluşturuyoruz.
+      const formData = new URLSearchParams();
+      formData.append('name', name);
+      formData.append('attendance', attendance);
+      formData.append('plusOne', plusOne);
+
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwAyuxOrA7UrBymacspf72d1xL7GetdBpDwNHqwhRoAXHYrikeuRAmheL5PP8WhIxk1/exec', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error('Ağ hatası oluştu.');
+        }
+
+        const result = await response.json();
+        if (result.result === 'success') {
+          document.getElementById('response-msg').textContent = `${name}, cevabınız başarıyla kaydedildi.`;
+        } else {
+          document.getElementById('response-msg').textContent = 'Bir hata oluştu, lütfen tekrar deneyin.';
+        }
+      } catch (error) {
+        console.error('Cevap gönderilirken hata:', error);
+        document.getElementById('response-msg').textContent = 'Bir hata oluştu: ' + error.message;
+      }
+    }
+  </script>
+</body>
+</html>
