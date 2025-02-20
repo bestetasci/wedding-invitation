@@ -91,7 +91,7 @@
     <h3 class="mt-8 text-xl font-medium">Katılım Durumu</h3>
     <form id="rsvp-form" class="mt-4 rsvp-form"
           method="POST"
-          action="https://script.google.com/macros/s/AKfycbw2x3eOnw0QFZQsbjdLlcXkdBPFbbYDOVsBBaJW5IJKMG0DTKA8uJfFHmhdpT7s98uK/exec"
+          action="https://script.google.com/macros/s/AKfycbz8TqoR_dycfAHLUb1gclcAF9bTALygKvQgYiybV9d--81W7TwmD37gvyxEMgaKzH2A/exec"
           onsubmit="event.preventDefault(); submitResponse();">
       
       <!-- İsim alanı artık gizli input olarak gönderilecek -->
@@ -150,7 +150,7 @@
       formData.append('plusOneName', plusOneName);
 
       try {                           
-        const response = await fetch('https://script.google.com/macros/s/AKfycbw2x3eOnw0QFZQsbjdLlcXkdBPFbbYDOVsBBaJW5IJKMG0DTKA8uJfFHmhdpT7s98uK/exec', {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbz8TqoR_dycfAHLUb1gclcAF9bTALygKvQgYiybV9d--81W7TwmD37gvyxEMgaKzH2A/exec', {
           method: 'POST',
           body: formData
         });
