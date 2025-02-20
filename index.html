@@ -92,9 +92,9 @@
           action="https://script.google.com/macros/s/AKfycbxN4EDG8VQFFdqP9Dm5Cj6-BVWklnsi9MnQRVBx_UvopB5m_A969wM5RcE_up62FGQX/exec"
           onsubmit="event.preventDefault(); submitResponse();">
       
-      <!-- İsim alanı gizli -->
+      <!-- İsim alanı gizli olarak gönderilecek -->
       <input type="hidden" id="name" name="name">
-
+      
       <label id="attendance-label" for="attendance" class="block text-gray-700 mt-4">Katılım Durumu:</label>
       <select id="attendance" name="attendance" class="w-full p-2 border border-gray-300 rounded-lg mt-2">
         <option value="" disabled selected>Seçiniz</option>
@@ -102,23 +102,27 @@
         <option value="Gelemeyeceğim">Gelemeyeceğim</option>
         <option value="Henüz Belli Değil">Henüz Belli Değil</option>
       </select>
-
-      <!-- After Party seçeneği; sadece "Geleceğim" seçilince gösterilecek -->
-      <div id="after-party-container" style="display: none;">
-        <label id="after-party-label" for="after-party" class="block text-gray-700 mt-4">After Party'e Katılacağım:</label>
-        <input type="checkbox" id="after-party" name="afterParty" class="mt-2">
-      </div>
-
-      <!-- +1 checkbox ve dinamik +1 isim alanı -->
-      <label id="plus-one-label" for="plus-one" class="block text-gray-700 mt-4">+1 ile Katılacak mısınız?</label>
-      <input type="checkbox" id="plus-one" name="plusOne" class="mt-2">
       
-      <!-- +1 isim alanı başlangıçta gizli -->
-      <div id="plus-one-name-container" style="display: none;">
-        <label id="plus-one-name-label" for="plus-one-name" class="block text-gray-700 mt-4">Getireceğiniz Kişinin Adı:</label>
-        <input type="text" id="plus-one-name" name="plusOneName" class="w-full p-2 border border-gray-300 rounded-lg mt-2">
+      <!-- After Party ve +1 container; başlangıçta gizli -->
+      <div id="extra-options-container" style="display: none;">
+        <!-- After Party seçeneği -->
+        <div id="after-party-container">
+          <label id="after-party-label" for="after-party" class="block text-gray-700 mt-4">After Party'e Katılacağım:</label>
+          <input type="checkbox" id="after-party" name="afterParty" class="mt-2">
+        </div>
+        <!-- +1 container -->
+        <div id="plus-one-container" style="margin-top: 1rem;">
+          <label id="plus-one-label" for="plus-one" class="block text-gray-700 mt-4">+1 ile Katılacak mısınız?</label>
+          <input type="checkbox" id="plus-one" name="plusOne" class="mt-2">
+          
+          <!-- +1 isim alanı başlangıçta gizli -->
+          <div id="plus-one-name-container" style="display: none;">
+            <label id="plus-one-name-label" for="plus-one-name" class="block text-gray-700 mt-4">Getireceğiniz Kişinin Adı:</label>
+            <input type="text" id="plus-one-name" name="plusOneName" class="w-full p-2 border border-gray-300 rounded-lg mt-2">
+          </div>
+        </div>
       </div>
-  
+      
       <button id="submit-button" type="submit" class="mt-4">Gönder</button>
     </form>
 
@@ -131,7 +135,24 @@
       function scrollToSection() {
         document.querySelector('.scroll-section').scrollIntoView({ behavior: 'smooth' });
       }
-
+      
+      // Attendance seçeneğine göre after party ve +1 container'ını göster/gizle
+      document.getElementById('attendance').addEventListener('change', function() {
+        var extraOptionsContainer = document.getElementById('extra-options-container');
+        if (this.value === "Geleceğim") {
+          extraOptionsContainer.style.display = 'block';
+        } else {
+          extraOptionsContainer.style.display = 'none';
+          // After party checkbox sıfırlansın
+          document.getElementById('after-party').checked = false;
+          // +1 checkbox ve ismi de sıfırlansın
+          document.getElementById('plus-one').checked = false;
+          document.getElementById('plus-one-name').value = "-";
+          // Ayrıca, +1 isim alanı gizlensin
+          document.getElementById('plus-one-name-container').style.display = 'none';
+        }
+      });
+      
       // +1 checkbox durumuna göre isim alanını göster/gizle
       document.getElementById('plus-one').addEventListener('change', function() {
         var plusOneNameContainer = document.getElementById('plus-one-name-container');
@@ -143,18 +164,6 @@
         }
       });
       
-      // Attendance seçeneğine göre after party alanını göster/gizle
-      document.getElementById('attendance').addEventListener('change', function() {
-        var afterPartyContainer = document.getElementById('after-party-container');
-        if (this.value === "Geleceğim") {
-          afterPartyContainer.style.display = 'block';
-        } else {
-          afterPartyContainer.style.display = 'none';
-          document.getElementById('after-party').checked = false;
-        }
-      });
-      
-      // Sayfa yüklendiğinde attendance için placeholder seçili kalır.
       // URL'den "name" parametresini okuyup, gizli inputa atıyoruz.
       const params = new URLSearchParams(window.location.search);
       const nameParam = params.get('name');
@@ -188,7 +197,7 @@
         }
 
         const result = await response.json();
-        console.log(result); // Gelen sonucu kontrol etmek için
+        console.log(result); // Yanıtı kontrol etmek için
         if (result.result && result.result.trim() === 'success') {
           document.getElementById('response-msg').textContent = `${name}, cevabınız başarıyla kaydedildi.`;
         } else {
