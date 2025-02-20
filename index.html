@@ -89,7 +89,7 @@
     <h3 class="mt-8 text-xl font-medium">Katılım Durumu</h3>
     <form id="rsvp-form" class="mt-4 rsvp-form"
           method="POST"
-          action="https://script.google.com/macros/s/AKfycbx4h65yv3hTO60Wqr3QpqQSr3tVlNo8v-ULBCHUGM3_0FvtS6XBPAtjODsMfANoWaI4/exec"
+          action="https://script.google.com/macros/s/AKfycbxsil5B_SmrcXGtxmOa5mHB1YoPbs-_gOs-0ZEqd_9EBMMQ4xgNbsSn53ACrERK8EtZ/exec"
           onsubmit="event.preventDefault(); submitResponse();">
       
       <!-- İsim alanı gizli olarak gönderilecek -->
@@ -182,7 +182,7 @@
       formData.append('afterParty', afterParty);
 
       try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbx4h65yv3hTO60Wqr3QpqQSr3tVlNo8v-ULBCHUGM3_0FvtS6XBPAtjODsMfANoWaI4/exec', {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxsil5B_SmrcXGtxmOa5mHB1YoPbs-_gOs-0ZEqd_9EBMMQ4xgNbsSn53ACrERK8EtZ/exec', {
           method: 'POST',
           body: formData
         });
