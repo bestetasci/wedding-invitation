@@ -193,7 +193,7 @@
 
         const result = await response.json();
         console.log(result);
-        if (result.result && result.result.trim() === 'success') {
+        if (result.result && result.result.toLowerCase().includes('success')) {
           // Form gönderimi başarılıysa, form ve akış içeriğini gizleyip feedback mesajını göster
           document.getElementById('rsvp-form').style.display = 'none';
           document.getElementById('event-flow-heading').style.display = 'none';
