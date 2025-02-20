@@ -56,13 +56,11 @@
       padding: 20px;
       box-sizing: border-box;
     }
-    /* Hem <object> hem de <img> için ortak stil */
     object, img {
       width: 100%;
       max-height: 100%;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
-    /* Scroll-down butonu için stil */
     .scroll-down {
       cursor: pointer;
       color: #2563eb;
@@ -94,11 +92,12 @@
           action="https://script.google.com/macros/s/AKfycbxN4EDG8VQFFdqP9Dm5Cj6-BVWklnsi9MnQRVBx_UvopB5m_A969wM5RcE_up62FGQX/exec"
           onsubmit="event.preventDefault(); submitResponse();">
       
-      <!-- İsim alanı artık gizli input olarak gönderilecek -->
+      <!-- İsim alanı gizli -->
       <input type="hidden" id="name" name="name">
 
       <label id="attendance-label" for="attendance" class="block text-gray-700 mt-4">Katılım Durumu:</label>
       <select id="attendance" name="attendance" class="w-full p-2 border border-gray-300 rounded-lg mt-2">
+        <option value="" disabled selected>Seçiniz</option>
         <option value="Geleceğim">Geleceğim</option>
         <option value="Gelemeyeceğim">Gelemeyeceğim</option>
         <option value="Henüz Belli Değil">Henüz Belli Değil</option>
@@ -128,10 +127,11 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Kaydırma fonksiyonu
       function scrollToSection() {
         document.querySelector('.scroll-section').scrollIntoView({ behavior: 'smooth' });
       }
-      
+
       // +1 checkbox durumuna göre isim alanını göster/gizle
       document.getElementById('plus-one').addEventListener('change', function() {
         var plusOneNameContainer = document.getElementById('plus-one-name-container');
@@ -150,11 +150,11 @@
           afterPartyContainer.style.display = 'block';
         } else {
           afterPartyContainer.style.display = 'none';
-          // Eğer görünmezse, after party checkbox'ını varsayılan olarak işaretlenmemiş bırakabilirsiniz
           document.getElementById('after-party').checked = false;
         }
       });
-
+      
+      // Sayfa yüklendiğinde attendance için placeholder seçili kalır.
       // URL'den "name" parametresini okuyup, gizli inputa atıyoruz.
       const params = new URLSearchParams(window.location.search);
       const nameParam = params.get('name');
@@ -167,12 +167,9 @@
       const name = document.getElementById('name').value;
       const attendance = document.getElementById('attendance').value;
       const plusOne = document.getElementById('plus-one').checked ? 'Evet' : 'Hayır';
-      // +1 isim alanını oku; eğer checkbox işaretli değilse değeri "-" olacak (yukarıdaki event'te ayarlandı)
       const plusOneName = document.getElementById('plus-one-name').value || "-";
-      // After party için checkbox değeri
       const afterParty = document.getElementById('after-party').checked ? 'Evet' : "-";
 
-      // Form verilerini URLSearchParams ile oluşturuyoruz.
       const formData = new URLSearchParams();
       formData.append('name', name);
       formData.append('attendance', attendance);
@@ -191,7 +188,8 @@
         }
 
         const result = await response.json();
-        if (result.result === 'success') {
+        console.log(result); // Gelen sonucu kontrol etmek için
+        if (result.result && result.result.trim() === 'success') {
           document.getElementById('response-msg').textContent = `${name}, cevabınız başarıyla kaydedildi.`;
         } else {
           document.getElementById('response-msg').textContent = 'Bir hata oluştu, lütfen tekrar deneyin.';
