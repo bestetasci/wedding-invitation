@@ -150,7 +150,7 @@
       </li>
     </ul>
 
-    <h3 class="mt-8 text-xl font-medium">Katılım Durumu</h3>
+    <h3 id="attendance-heading" class="mt-8 text-xl font-medium">Katılım Durumu</h3>
     <form id="rsvp-form" class="mt-4 rsvp-form"
           method="POST"
           action="https://script.google.com/macros/s/AKfycbwkoLQfUGNX9I2Ynv0C6ypMDG0cPsSZ3c188tMY_-FY6xzF66gPDU-prhFOL5v29Y-8/exec"
@@ -189,8 +189,7 @@
       <!-- Loader elemanı, başlangıçta gizli -->
       <div id="loader" class="loader" style="display: none;"></div>
     </form>
-
-    <p id="response-msg" class="mt-4 text-lg text-green-600"></p>
+    <p id="response-msg" class="mt-4 text-center text-3xl font-bold text-green-600"></p>
   </div>
 
   <script>
@@ -264,6 +263,7 @@
           // Form gönderimi başarılıysa, formu ve akış içeriğini gizleyip feedback mesajını göster
           document.getElementById('rsvp-form').style.display = 'none';
           document.getElementById('event-flow-heading').style.display = 'none';
+          document.getElementById('attendance-heading').style.display = 'none';
           // İsteğe bağlı olarak, akış listesini de gizleyebilirsiniz:
           // document.querySelector('.scroll-section ul').style.display = 'none';
 
