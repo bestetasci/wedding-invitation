@@ -71,7 +71,7 @@
 <body>
   <div class="hero">
     <div class="svg-wrapper">
-      <video autoplay muted playsinline width="100%">
+      <video id="wedding-video" autoplay muted playsinline preload="auto" width="100%">
         <source src="dugun_davetiyesi_canva.mp4" type="video/mp4">
         Tarayıcınız video etiketini desteklemiyor.
       </video>
@@ -181,6 +181,13 @@
       // Katılım seçeneğine göre ekstra seçenekleri göster/gizle
       document.getElementById('attendance').addEventListener('change', function() {
         var extraOptionsContainer = document.getElementById('extra-options-container');
+        var video = document.getElementById('wedding-video');
+        if (video) {
+          // Otomatik oynatma başarısızsa, manuel oynatma denemesi
+          video.play().catch(function(error) {
+            console.log("Autoplay error:", error);
+          });
+        }
         if (this.value === "Geleceğim") {
           extraOptionsContainer.style.display = 'block';
         } else {
