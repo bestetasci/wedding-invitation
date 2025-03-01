@@ -66,6 +66,19 @@
       color: #2563eb;
       margin-top: 20px;
     }
+    .loader {
+      border: 8px solid #f3f3f3; /* Açık gri kenar */
+      border-top: 8px solid #3498db; /* Mavi kenar */
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -133,6 +146,7 @@
           <span class="text-xl font-bold">🔥 AFTERPARTY:</span>  
           <br> <strong>Adada geceler uzun!</strong>  
           <br> 🎵 Müzik, içkiler ve <strong>sucuk ekmek</strong> eşliğinde eğlenceye devam ediyoruz. Katılım opsyonel. 🌟
+          <hr class="my-2 border-gray-300" />
       </li>
     </ul>
 
@@ -145,7 +159,7 @@
       <!-- İsim alanı (gizli) sunucu tarafından dolduruluyor -->
       <input type="hidden" id="name" name="name" value="<?= guestName ?>">
       
-      <label id="attendance-label" for="attendance" class="block text-gray-700 mt-4">Katılım Durumu:</label>
+      <!-- <label id="attendance-label" for="attendance" class="block text-gray-700 mt-4">Katılım Durumu:</label> -->
       <select id="attendance" name="attendance" class="w-full p-2 border border-gray-300 rounded-lg mt-2">
         <option value="" disabled selected>Seçiniz</option>
         <option value="Geleceğim">Geleceğim</option>
@@ -172,6 +186,8 @@
       </div>
       
       <button id="submit-button" type="submit" class="mt-4">Gönder</button>
+      <!-- Loader elemanı, başlangıçta gizli -->
+      <div id="loader" class="loader" style="display: none;"></div>
     </form>
 
     <p id="response-msg" class="mt-4 text-lg text-green-600"></p>
@@ -218,6 +234,7 @@
     });
 
     async function submitResponse() {
+      document.getElementById('loader').style.display = 'block';
       const name = document.getElementById('name').value;
       const attendance = document.getElementById('attendance').value;
       const plusOne = document.getElementById('plus-one').checked ? 'Evet' : 'Hayır';
@@ -268,7 +285,10 @@
       } catch (error) {
         console.error('Cevap gönderilirken hata:', error);
         document.getElementById('response-msg').textContent = 'Bir hata oluştu: ' + error.message;
-      }
+      } finally {
+        // İşlem tamamlandığında loader'ı gizle
+        document.getElementById('loader').style.display = 'none';
+  }
     }
   </script>
 
